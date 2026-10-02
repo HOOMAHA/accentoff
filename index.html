@@ -11,44 +11,208 @@
   <title>AccentOff — тренажёр английского произношения</title>
 
   <style>
-    /* Оформление всей страницы: шрифт, цвета и отступы */
+    /* Размеры элементов учитывают внутренние отступы */
+    * {
+      box-sizing: border-box;
+    }
+
+    /* Основные цвета, шрифт и фон страницы */
     body {
       margin: 0;
-      padding: 24px;
+      padding: 32px 16px;
       font-family: Arial, sans-serif;
-      background: #f0f4fa;
-      color: #17243b;
-      line-height: 1.6;
+      color: #23324a;
+      background: linear-gradient(135deg, #edf2ff, #f4f8fb);
+      line-height: 1.7;
     }
 
-    /* Белая карточка с содержимым */
+    /* Центральная область сайта */
     main {
-      max-width: 720px;
-      margin: 40px auto;
-      padding: 32px;
-      background: white;
-      border-radius: 20px;
+      width: 100%;
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 40px;
+      background: #ffffff;
+      border: 1px solid #e3e9f3;
+      border-radius: 28px;
+      box-shadow: 0 16px 48px rgba(35, 50, 74, 0.08);
+      overflow-wrap: break-word;
     }
 
-    /* Главный заголовок */
+    /* Название AccentOff */
     h1 {
-      margin: 0;
+      margin: 12px 0;
       color: #3155cf;
-      font-size: 44px;
+      font-size: clamp(38px, 8vw, 60px);
+      line-height: 1.15;
+      letter-spacing: -1.5px;
     }
 
     /* Заголовки разделов */
     h2 {
-      margin-top: 28px;
-      font-size: 22px;
+      margin: 28px 0 12px;
+      color: #192942;
+      font-size: 23px;
+      line-height: 1.35;
     }
 
-    /* Плашка, обозначающая стадию проекта */
+    p {
+      margin: 12px 0;
+    }
+
+    /* Описание сразу под названием сайта */
+    h1 + p {
+      color: #52627b;
+      font-size: 19px;
+    }
+
+    /* Плашка «Учебный проект» */
     .status {
       display: inline-block;
-      padding: 6px 12px;
-      background: #eaf0ff;
-      border-radius: 8px;
+      margin: 0;
+      padding: 7px 14px;
+      color: #3155cf;
+      background: #edf2ff;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    /* Каждое упражнение — отдельная карточка */
+    section {
+      margin-top: 28px;
+      padding: 24px;
+      background: #f8faff;
+      border: 1px solid #dde5f5;
+      border-radius: 20px;
+    }
+
+    section h2 {
+      margin-top: 0;
+    }
+
+    /* Отступы в списках */
+    ul,
+    ol {
+      padding-left: 24px;
+    }
+
+    li {
+      margin: 8px 0;
+    }
+
+    /* Кнопки записи и остановки */
+    button {
+      min-height: 48px;
+      margin: 6px 8px 6px 0;
+      padding: 12px 20px;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      font: inherit;
+      font-weight: bold;
+      color: #ffffff;
+      background: #3155cf;
+      cursor: pointer;
+    }
+
+    button:hover:not(:disabled) {
+      background: #2544ae;
+    }
+
+    /* Кнопка остановки отличается по цвету */
+    #stopButton {
+      color: #3155cf;
+      background: #e8eeff;
+      border-color: #ced9ff;
+    }
+
+    #stopButton:hover:not(:disabled) {
+      background: #dce5ff;
+    }
+
+    /* Вид недоступной кнопки */
+    button:disabled {
+      color: #68758a;
+      background: #e8ecf2;
+      border-color: #e8ecf2;
+      cursor: not-allowed;
+    }
+
+    /* Раскрывающаяся подсказка */
+    details {
+      margin: 20px 0;
+      padding: 16px 18px;
+      background: #ffffff;
+      border: 1px solid #dce4f3;
+      border-radius: 14px;
+    }
+
+    summary {
+      color: #3155cf;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    details[open] summary {
+      margin-bottom: 14px;
+    }
+
+    /* Сообщение о состоянии записи */
+    #recordStatus {
+      padding: 12px 16px;
+      background: #edf2ff;
+      border-radius: 12px;
+    }
+
+    /* Проигрыватель не выходит за границы карточки */
+    audio {
+      width: 100%;
+      max-width: 100%;
+      margin-top: 8px;
+    }
+
+    /* Ссылки на учебные материалы */
+    a {
+      color: #3155cf;
+      text-underline-offset: 3px;
+    }
+
+    a:hover {
+      color: #203b9e;
+    }
+
+    /* Видимое выделение при управлении клавиатурой */
+    button:focus-visible,
+    summary:focus-visible,
+    a:focus-visible {
+      outline: 3px solid #6585ee;
+      outline-offset: 4px;
+    }
+
+    /* На небольших экранах уменьшаем отступы */
+    @media (max-width: 600px) {
+      body {
+        padding: 16px 10px;
+      }
+
+      main {
+        padding: 24px 18px;
+        border-radius: 20px;
+      }
+
+      section {
+        padding: 18px;
+      }
+
+      h2 {
+        font-size: 21px;
+      }
+
+      /* Кнопки располагаются одна под другой */
+      button {
+        width: 100%;
+        margin: 6px 0;
+      }
     }
   </style>
 </head>
