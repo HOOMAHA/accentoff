@@ -121,5 +121,149 @@
       </p>
     </section>
   </main>
+      <!-- Кнопки записи и проигрыватель -->
+    <section>
+      <h2>Послушай своё произношение</h2>
+      <p>Нажми «Записать» и произнеси: think — thin — three.</p>
+
+      <button id="recordButton" type="button">Записать</button>
+      <button id="stopButton" type="button" disabled>
+        Остановить
+      </button>
+
+      <!-- Здесь появляются сообщения о записи -->
+      <p id="recordStatus" role="status">Готов к записи.</p>
+
+      <!-- Проигрыватель появится, когда запись будет готова -->
+      <audio id="voicePlayer" controls hidden
+        style="width: 100%;"></audio>
+
+      <p>
+        Запись не отправляется на сервер.
+        После обновления страницы она исчезнет.
+      </p>
+    </section>
+
+    <script>
+      // Находим кнопки и проигрыватель на странице
+      const recordButton = document.getElementById("recordButton");
+      const stopButton = document.getElementById("stopButton");
+      const recordStatus = document.getElementById("recordStatus");
+      const voicePlayer = document.getElementById("voicePlayer");
+
+      let recorder;
+      let microphone;
+      let recordingUrl;
+      let recordingTimer;
+
+      // Выключаем микрофон после использования
+      function releaseMicrophone() {
+        if (microphone) {
+          microphone.getTracks().forEach(track => track.stop());
+          microphone = null;
+        }
+      }
+
+      // Проверяем, умеет ли браузер записывать звук
+      if (!navigator.mediaDevices?.getUserMedia ||
+          !window.MediaRecorder) {
+        recordButton.disabled = true;
+        recordStatus.textContent =
+          "Запись недоступна. Попробуй открыть сайт в Chrome или Firefox.";
+      }
+
+      // Нажатие на кнопку «Записать»
+      recordButton.addEventListener("click", async () => {
+        recordButton.disabled = true;
+        voicePlayer.pause();
+        recordStatus.textContent =
+          "Разреши доступ к микрофону в окне браузера.";
+
+        try {
+          // Запрашиваем только микрофон, без камеры
+          microphone = await navigator.mediaDevices.getUserMedia({
+            audio: true
+          });
+
+          recorder = new MediaRecorder(microphone);
+          const audioParts = [];
+          let recordingFailed = false;
+
+          // Собираем полученные части записи
+          recorder.addEventListener("dataavailable", event => {
+            if (event.data.size > 0) {
+              audioParts.push(event.data);
+            }
+          });
+
+          // Сообщаем, если во время записи возникла ошибка
+          recorder.addEventListener("error", () => {
+            recordingFailed = true;
+            clearTimeout(recordingTimer);
+            releaseMicrophone();
+            stopButton.disabled = true;
+            recordStatus.textContent =
+              "Запись прервалась. Обнови страницу и попробуй снова.";
+          });
+
+          // После остановки помещаем запись в проигрыватель
+          recorder.addEventListener("stop", () => {
+            clearTimeout(recordingTimer);
+            releaseMicrophone();
+            stopButton.disabled = true;
+            recordButton.disabled = false;
+
+            if (recordingFailed || audioParts.length === 0) {
+              recordStatus.textContent =
+                "Не удалось записать звук. Попробуй ещё раз.";
+              return;
+            }
+
+            const audioFile = new Blob(audioParts, {
+              type: recorder.mimeType || audioParts[0].type
+            });
+
+            // Освобождаем память от предыдущей записи
+            if (recordingUrl) {
+              URL.revokeObjectURL(recordingUrl);
+            }
+
+            recordingUrl = URL.createObjectURL(audioFile);
+            voicePlayer.src = recordingUrl;
+            voicePlayer.hidden = false;
+            recordStatus.textContent =
+              "Запись готова! Нажми ▶ в проигрывателе.";
+          });
+
+          recorder.start();
+          stopButton.disabled = false;
+          recordStatus.textContent =
+            "Идёт запись. Произнеси слова и нажми «Остановить».";
+
+          // Через 30 секунд запись остановится сама
+          recordingTimer = setTimeout(stopRecording, 30000);
+        } catch (error) {
+          releaseMicrophone();
+          recordButton.disabled = false;
+          stopButton.disabled = true;
+
+          recordStatus.textContent =
+            error.name === "NotAllowedError"
+              ? "Доступ к микрофону запрещён. Разреши его в настройках сайта в браузере."
+              : "Не удалось включить микрофон. Проверь его подключение и попробуй снова.";
+        }
+      });
+
+      // Останавливаем запись по нажатию кнопки
+      function stopRecording() {
+        if (recorder && recorder.state === "recording") {
+          stopButton.disabled = true;
+          recordStatus.textContent = "Подготавливаем запись…";
+          recorder.stop();
+        }
+      }
+
+      stopButton.addEventListener("click", stopRecording);
+    </script>
 </body>
 </html>
