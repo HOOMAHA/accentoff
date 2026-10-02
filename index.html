@@ -214,6 +214,121 @@
         margin: 6px 0;
       }
     }
+        /* Новый стиль: бумага, тёмные чернила и бордовый акцент */
+    body {
+      background: #f2eee6;
+      color: #302e2b;
+      font-family: "Helvetica Neue", Arial, sans-serif;
+    }
+
+    /* Более строгая основа без тени */
+    main {
+      background: #fffdf8;
+      border-color: #d8d1c5;
+      border-radius: 8px;
+      box-shadow: none;
+    }
+
+    /* Книжный шрифт для названия и заголовков */
+    h1,
+    h2 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: normal;
+    }
+
+    h1 {
+      color: #702f3b;
+      letter-spacing: -1px;
+    }
+
+    h2 {
+      color: #302e2b;
+    }
+
+    h1 + p {
+      color: #625d55;
+    }
+
+    /* Плашка становится небольшой текстовой пометкой */
+    .status {
+      padding: 0;
+      background: transparent;
+      color: #702f3b;
+      border-radius: 0;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+
+    /* Карточки упражнений */
+    section {
+      background: #f7f3eb;
+      border-color: #d8d1c5;
+      border-radius: 6px;
+    }
+
+    /* Основная кнопка */
+    button {
+      background: #702f3b;
+      border-radius: 5px;
+    }
+
+    button:hover:not(:disabled) {
+      background: #54232c;
+    }
+
+    /* Вторая кнопка */
+    #stopButton {
+      color: #702f3b;
+      background: #fffdf8;
+      border-color: #b69a9c;
+    }
+
+    #stopButton:hover:not(:disabled) {
+      background: #eee2df;
+    }
+
+    /* Недоступные кнопки */
+    button:disabled,
+    #stopButton:disabled {
+      color: #756f66;
+      background: #e7e1d7;
+      border-color: #d8d1c5;
+    }
+
+    /* Подсказка и сообщения */
+    details {
+      background: #fffdf8;
+      border-color: #d8d1c5;
+      border-radius: 5px;
+    }
+
+    summary,
+    a {
+      color: #702f3b;
+    }
+
+    a:hover {
+      color: #54232c;
+    }
+
+    #recordStatus {
+      background: #ebe5da;
+      border-radius: 5px;
+    }
+
+    /* Выделение при управлении клавиатурой */
+    button:focus-visible,
+    summary:focus-visible,
+    a:focus-visible {
+      outline-color: #702f3b;
+    }
+
+    /* Сохраняем небольшие скругления на телефоне */
+    @media (max-width: 600px) {
+      main {
+        border-radius: 8px;
+      }
+    }
   </style>
 </head>
 
