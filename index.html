@@ -406,6 +406,11 @@
       letter-spacing: -1px;
       color: #702f3b;
       margin: 20px 0 16px;
+            /* Светлая золотистая обводка вокруг букв */
+      -webkit-text-stroke: 4px #d8ba87;
+
+      /* Обводка рисуется под буквами и не съедает их толщину */
+      paint-order: stroke fill;
     }
   </style>
  
