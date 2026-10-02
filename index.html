@@ -330,6 +330,67 @@
       }
     }
   </style>
+      /* Мягкий шрифт: браузер выберет доступный на устройстве */
+    body {
+      font-family: "Trebuchet MS", "Segoe UI", Arial, sans-serif;
+      font-size: 19px;
+      line-height: 1.75;
+    }
+
+    /* Название и заголовки используют тот же шрифт */
+    h1,
+    h2 {
+      font-family: inherit;
+      letter-spacing: normal;
+    }
+
+    /* Более спокойный размер названия */
+    h1 {
+      font-size: clamp(36px, 7vw, 48px);
+      font-weight: bold;
+      line-height: 1.2;
+    }
+
+    /* Хорошо заметные заголовки упражнений */
+    h2 {
+      font-size: 26px;
+      font-weight: bold;
+      line-height: 1.4;
+    }
+
+    /* Описание проекта */
+    h1 + p {
+      font-size: 21px;
+      color: #49453f;
+    }
+
+    /* Пометка сверху тоже становится читаемее */
+    .status {
+      font-size: 15px;
+      letter-spacing: normal;
+      font-weight: normal;
+    }
+
+    /* Кнопки наследуют увеличенный размер текста */
+    button {
+      font-family: inherit;
+      font-size: 19px;
+    }
+
+    /* Размеры для телефона */
+    @media (max-width: 600px) {
+      body {
+        font-size: 18px;
+      }
+
+      h2 {
+        font-size: 24px;
+      }
+
+      h1 + p {
+        font-size: 20px;
+      }
+    }
 </head>
 
 <body>
